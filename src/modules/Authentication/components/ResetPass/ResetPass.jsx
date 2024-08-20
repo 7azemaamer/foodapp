@@ -3,10 +3,10 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { IoLockClosedOutline } from "react-icons/io5"
 import { MdEmail } from "react-icons/md"
-import { BASE_URL } from "../../../../Utils/constants"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import logo from "../../../../assets/imgs/main-logo.png"
+import { USERS_URLS } from "../../../../Utils/END_POINTS"
 
 export default function ResetPass() {
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ export default function ResetPass() {
 
   const onSubmit = async (data) => {
     try {
-      let response = await axios.post(`${BASE_URL}/api/v1/Users/Reset`, data)
+      let response = await axios.post(USERS_URLS.reset, data)
       toast.success(response.data.message)
       navigate("/login")
     } catch (err) {

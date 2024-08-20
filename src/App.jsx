@@ -14,6 +14,10 @@ import { jwtDecode } from "jwt-decode"
 import ProtectedRoute from "./modules/Shared/components/ProtectedRoute/ProtectedRoute"
 import { useState } from "react"
 import Register from "./modules/Authentication/components/Register/Register"
+import AddRecipe from "./modules/Recipes/components/AddRecipe/AddRecipe"
+import VerifyAccount from "./modules/Authentication/components/VerifyAccount/VerifyAccount"
+import Favorites from "./modules/Favorites/Components/Favorites/Favorites"
+import RoleProtector from "./modules/Shared/components/RoleProtector/RoleProtector"
 
 function App() {
   const [user, setUser] = useState(null)
@@ -23,7 +27,6 @@ function App() {
 
     if (encodedUser) {
       let user = jwtDecode(encodedUser)
-
       setUser(user)
     }
   }
@@ -37,6 +40,7 @@ function App() {
         { path: "login", element: <Login saveUser={saveUser} /> },
         { path: "register", element: <Register /> },
         { path: "forget-password", element: <ForgetPassword /> },
+        { path: "verify-account", element: <VerifyAccount /> },
         { path: "reset-password", element: <ResetPass /> },
       ],
     },
@@ -47,13 +51,46 @@ function App() {
           <MasterLayout user={user} />
         </ProtectedRoute>
       ),
-
       children: [
         { index: true, element: <Home /> },
         { path: "home", element: <Home /> },
-        { path: "recipes", element: <Recipes /> },
-        { path: "categories", element: <Categories /> },
-        { path: "users", element: <Users /> },
+        {
+          path: "recipes",
+          element: <Recipes />,
+        },
+        {
+          path: "add-recipe",
+          element: (
+            <RoleProtector>
+              <AddRecipe />
+            </RoleProtector>
+          ),
+        },
+        {
+          path: "edit-recipe/:id",
+          element: (
+            <RoleProtector>
+              <AddRecipe />
+            </RoleProtector>
+          ),
+        },
+        {
+          path: "categories",
+          element: (
+            <RoleProtector>
+              <Categories />
+            </RoleProtector>
+          ),
+        },
+        {
+          path: "users",
+          element: (
+            <RoleProtector>
+              <Users />{" "}
+            </RoleProtector>
+          ),
+        },
+        { path: "favorite", element: <Favorites /> },
       ],
     },
     {

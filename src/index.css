@@ -1,0 +1,24 @@
+.overflow-hidden {
+  overflow: hidden !important;
+}
+.no-outline {
+  outline: none !important;
+}
+.border-0 {
+  border: 0 !important;
+}
+.bg-main-light {
+  background-color: #f0ffef !important;
+}
+.bg-main {
+  background-color: #018340 !important;
+  color: white;
+}
+.text-main {
+  color: #018340 !important;
+}
+.btn-main {
+  background-color: #018340 !important;
+  color: white !important;
+  padding: 05px 20px !important;
+}

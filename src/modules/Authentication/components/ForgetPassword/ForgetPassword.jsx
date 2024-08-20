@@ -3,9 +3,10 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { IoIosPhonePortrait } from "react-icons/io"
 import { toast } from "react-toastify"
-import { BASE_URL } from "../../../../Utils/constants"
+
 import { useNavigate } from "react-router-dom"
 import logo from "../../../../assets/imgs/main-logo.png"
+import { USERS_URLS } from "../../../../Utils/END_POINTS"
 
 export default function ForgetPassword() {
   const navigate = useNavigate()
@@ -17,10 +18,7 @@ export default function ForgetPassword() {
 
   const onSubmit = async (data) => {
     try {
-      let response = await axios.post(
-        `${BASE_URL}/api/v1/Users/Reset/Request`,
-        data
-      )
+      let response = await axios.post(USERS_URLS.resetRequest, data)
       toast.success(response.data.message)
       navigate("/reset-password")
     } catch (err) {

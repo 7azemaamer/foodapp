@@ -1,13 +1,16 @@
 import axios from "axios"
-import React from "react"
+import React, { useContext, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { IoIosPhonePortrait } from "react-icons/io"
 import { IoLockClosedOutline } from "react-icons/io5"
-import { BASE_URL } from "../../../../Utils/constants"
+
 import { toast } from "react-toastify"
 import { Link, useNavigate } from "react-router-dom"
 import logo from "../../../../assets/imgs/main-logo.png"
-export default function Login({ saveUser }) {
+import { USERS_URLS } from "../../../../Utils/END_POINTS"
+import { AuthContext } from "../../../../Context/AuthContext"
+export default function Login() {
+  const { saveUser } = useContext(AuthContext)
   const navigate = useNavigate()
   let {
     register,
@@ -18,7 +21,7 @@ export default function Login({ saveUser }) {
 
   const onSubmit = async (data) => {
     try {
-      let response = await axios.post(`${BASE_URL}/api/v1/Users/Login`, data)
+      let response = await axios.post(USERS_URLS.login, data)
       localStorage.setItem("foodToken", response.data.token)
       saveUser() // Save user to state
       toast.success("Login Successful")
@@ -27,6 +30,11 @@ export default function Login({ saveUser }) {
       toast.error(err.response.data.message)
     }
   }
+  useEffect(() => {
+    if (localStorage.getItem("foodToken")) {
+      navigate("/dashboard")
+    }
+  }, [])
   return (
     <>
       <div className="auth-container ">
@@ -74,11 +82,6 @@ export default function Login({ saveUser }) {
                         aria-describedby="basic-addon1"
                         {...register("password", {
                           required: "Password is required",
-                          pattern: {
-                            value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/,
-                            message:
-                              "Password must contain at least one numeric digit, one uppercase and one lowercase letter",
-                          },
                         })}
                       />
                     </div>

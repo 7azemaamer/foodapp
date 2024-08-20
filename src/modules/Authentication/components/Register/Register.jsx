@@ -1,12 +1,13 @@
 import axios from "axios"
-import React from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { IoIosPhonePortrait } from "react-icons/io"
 import { IoLockClosedOutline } from "react-icons/io5"
-import { BASE_URL } from "../../../../Utils/constants"
 import { toast } from "react-toastify"
 import { Link, useNavigate } from "react-router-dom"
 import logo from "../../../../assets/imgs/main-logo.png"
+import { USERS_URLS } from "../../../../Utils/END_POINTS"
+
 export default function Register() {
   const navigate = useNavigate()
   let {
@@ -18,13 +19,13 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-      let response = await axios.post(`${BASE_URL}/api/v1/Users/Register`, data)
+      let response = await axios.post(USERS_URLS.register, data)
       console.log(response)
       toast.success("Login Successful")
       toast.success(response.data.message, {
         autoClose: false,
       })
-      navigate("/login")
+      navigate("/verify-account")
     } catch (err) {
       console.log(err)
       if (err.response.data?.additionalInfo.errors) {
@@ -42,6 +43,11 @@ export default function Register() {
       toast.error(err.response.data.message)
     }
   }
+  useEffect(() => {
+    if (localStorage.getItem("foodToken")) {
+      navigate("/dashboard")
+    }
+  }, [])
   return (
     <>
       <div className="auth-container ">
@@ -174,9 +180,6 @@ export default function Register() {
                           aria-describedby="basic-addon1"
                           {...register("confirmPassword", {
                             required: "Confirm password is required",
-                            validate: (value) =>
-                              value === watch("password") ||
-                              "Passwords do not match",
                           })}
                         />
                       </div>

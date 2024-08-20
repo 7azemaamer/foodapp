@@ -1,16 +1,21 @@
-import React, { useState } from "react"
-import { BiCategory, BiFoodMenu, BiHome, BiLockOpen } from "react-icons/bi"
-import { BsToggle2On } from "react-icons/bs"
+import React, { useContext, useState } from "react"
+import {
+  BiCategory,
+  BiFoodMenu,
+  BiHeart,
+  BiHome,
+  BiLockOpen,
+} from "react-icons/bi"
 import { GrUserSettings } from "react-icons/gr"
 import { LuLogOut } from "react-icons/lu"
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar"
 import { Link, useNavigate } from "react-router-dom"
 import logo from "../../../../assets/imgs/logo.png"
-import Modal from "react-modal"
-import ChangePassword from "../../../Authentication/components/ChangePassword/ChangePassword"
+import { AuthContext } from "../../../../Context/AuthContext"
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { user } = useContext(AuthContext)
 
   const navigate = useNavigate()
   const toggle = () => {
@@ -30,14 +35,6 @@ export default function SideBar() {
     navigate("/login")
   }
 
-  const openModal = () => {
-    setIsModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
-  }
-
   return (
     <div className={`sidebar `}>
       <Sidebar className="side-bar" collapsed={isCollapsed}>
@@ -50,30 +47,37 @@ export default function SideBar() {
           <MenuItem icon={<BiHome />} component={<Link to="/dashboard" />}>
             Home
           </MenuItem>
-          <MenuItem
-            icon={<GrUserSettings />}
-            component={<Link to="/dashboard/users" />}
-          >
-            Users
-          </MenuItem>
+          {user?.userGroup === "SuperAdmin" && (
+            <MenuItem
+              icon={<GrUserSettings />}
+              component={<Link to="/dashboard/users" />}
+            >
+              Users
+            </MenuItem>
+          )}
+
           <MenuItem
             icon={<BiFoodMenu />}
             component={<Link to="/dashboard/recipes" />}
           >
             Recipes
           </MenuItem>
-          <MenuItem icon={<BiLockOpen />} onClick={openModal}>
-            Change Password
-          </MenuItem>
-          <Modal
-            isOpen={isModalOpen}
-            onRequestClose={closeModal}
-            contentLabel="Change Password"
-            className="modal"
-            overlayClassName="overlay"
-          >
-            <ChangePassword onClose={closeModal} />
-          </Modal>
+          {user?.userGroup === "SuperAdmin" && (
+            <MenuItem
+              icon={<BiCategory />}
+              component={<Link to="/dashboard/categories" />}
+            >
+              Categories
+            </MenuItem>
+          )}
+          {user?.userGroup === "SystemUser" && (
+            <MenuItem
+              icon={<BiHeart />}
+              component={<Link to="/dashboard/favorite" />}
+            >
+              Favorite
+            </MenuItem>
+          )}
           <MenuItem onClick={logout} icon={<LuLogOut />}>
             Logout
           </MenuItem>

@@ -1,30 +1,30 @@
-import React from "react"
-import { BiNotification, BiSearch } from "react-icons/bi"
-import { CgNotifications } from "react-icons/cg"
+import React, { useContext, useEffect } from "react"
+import { BiSearch } from "react-icons/bi"
 import { FaUserCircle } from "react-icons/fa"
 import { MdNotificationsActive } from "react-icons/md"
-import { RxAvatar } from "react-icons/rx"
+import { AuthContext } from "../../../../Context/AuthContext"
 
-export default function Navbar({ user }) {
+export default function Navbar() {
+  const { user } = useContext(AuthContext)
+
   return (
     <>
       <nav className="navbar navbar-expand-lg mt-4 ">
         <div className="container-fluid">
-          <form class="d-flex" role="search">
-            <div class="input-group mb-3 border border-2 rounded-4 px-2">
+          <form className="d-flex" role="search">
+            <div className="input-group mb-3 border border-2 rounded-4 px-2">
               <span
-                class="input-group-text bg-white border-0 text-muted"
+                className="input-group-text bg-white border-0 text-muted"
                 id="basic-addon1"
               >
                 <BiSearch />
               </span>
               <input
                 type="text"
-                class="form-control"
+                className="form-control border-0"
                 placeholder="Search Here"
                 aria-label="Search"
                 aria-describedby="basic-addon1"
-                className=" border-0"
               />
             </div>
           </form>
@@ -43,9 +43,9 @@ export default function Navbar({ user }) {
             className="collapse navbar-collapse justify-content-end "
             id="navbarSupportedContent"
           >
-            <div class="nav-item dropdown d-flex  gap-4">
+            <div className="nav-item dropdown d-flex align-items-center  gap-4">
               <a
-                class="nav-link dropdown-toggle d-flex gap-2 align-items-center justify-content-center"
+                className="nav-link dropdown-toggle d-flex gap-2 align-items-center justify-content-center"
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
@@ -54,9 +54,9 @@ export default function Navbar({ user }) {
                 <FaUserCircle size={30} />
                 <p className="mt-2">{user?.userName}</p>
               </a>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#">
                     Zicoaamer
                   </a>
                 </li>

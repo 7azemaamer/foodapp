@@ -12,7 +12,7 @@ export default function MasterLayout({ user }) {
           <div className="col-md-2 p-0 ">
             <SideBar />
           </div>
-          <div className="col-md-9 ">
+          <div className="col-md-9 master ">
             <Navbar user={user} />
             <Outlet user={user} />
           </div>
